@@ -15,7 +15,7 @@ function focusHeading(){window.scrollTo(0,0);app.querySelector('h1,h2')?.focus({
 function home(){app.innerHTML='<section class="cover"><h1 tabindex="-1">論理国語の語彙演習</h1><p>反意語 30組　／　カタカナ語 61語</p></section><section class="panel"><h2>演習を設定</h2>'+radios('range','出題範囲',[['mix','ミックス'],['pair','反意語'],['word','カタカナ語']])+'<div class="pair">'+radios('size','問題数',[['10','10問'],['20','20問']])+radios('count','選択肢',[['9','9択'],['12','12択']])+'</div>'+radios('mode','採点のタイミング',[['practice','練習｜1問ごと'],['test','模擬｜最後に採点']])+'<button class="primary" id="start">演習をはじめる →</button></section><button class="sub" id="review" '+(weak.size?'':'disabled')+'>苦手な語を復習（'+weak.size+'件）</button>';
 app.onchange=e=>{settings[e.target.name]=e.target.value};document.querySelector('#start').onclick=()=>start(records.filter(r=>settings.range==='mix'||settings.range===r.kind));document.querySelector('#review').onclick=()=>start(records.filter(r=>weak.has(r.id)),true);focusHeading()}
 function start(pool,review=false){deck=shuffled(pool).slice(0,Number(settings.size));index=0;answers=[];mode=review?'practice':settings.mode;ask()}
-function short(s){return s.split(/[（、]/)[0]}
+function short(s){return s.replace(/（[^）]*）/g,'').split('、')[0]}
 function kana(s){return /^[ァ-ヿー・]+$/.test(s)}
 function makeQuestion(r,reverse=Math.random()<.5){
  const pair=r.kind==='pair';
